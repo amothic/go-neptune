@@ -3,6 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/golang:1.13
+      - image: amothic/neptune:latest
     steps:
       - checkout
-      - run: go test -v ./...
+      - run:
+          name: Waiting for graph database to be ready
+          command: dockerize -wait tcp://localhost:8182 -timeout 30s
+      - run:
+          name: Run tests
+          command: go test -v ./...
