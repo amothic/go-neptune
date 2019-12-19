@@ -10,5 +10,5 @@ jobs:
           name: Waiting for graph database to be ready
           command: dockerize -wait tcp://localhost:8182 -timeout 30s
       - run:
-          name: Run tests
+          name: Run test
           command: go test -v ./...
