@@ -11,5 +11,5 @@ func (c *Client) Query(query string) (*Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &target, target.detectError()
+	return &target, target.Error()
 }

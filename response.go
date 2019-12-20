@@ -5,21 +5,6 @@ import (
 	"fmt"
 )
 
-const (
-	StatusSuccess                  = 200
-	StatusNoContent                = 204
-	StatusPartialContent           = 206
-	StatusUnauthorized             = 401
-	StatusAuthenticate             = 407
-	StatusClientSerializationError = 497
-	StatusMalformedRequest         = 498
-	StatusInvalidRequestArguments  = 499
-	StatusServerError              = 500
-	StatusScriptEvaluationError    = 597
-	StatusServerTimeout            = 598
-	StatusServerSerializationError = 599
-)
-
 type Response struct {
 	RequestID string         `json:"requestId"`
 	Status    ResponseStatus `json:"status"`
@@ -37,29 +22,18 @@ type ResponseResult struct {
 	Meta map[string]interface{} `json:"meta"`
 }
 
-func (r *Response) detectError() error {
+func (r *Response) isError() bool {
 	switch r.Status.Code {
 	case StatusSuccess, StatusNoContent, StatusPartialContent:
-		return nil
-	case StatusUnauthorized:
-		return fmt.Errorf("unauthorized")
-	case StatusAuthenticate:
-		return fmt.Errorf("authenticate")
-	case StatusClientSerializationError:
-		return fmt.Errorf("client serialization error")
-	case StatusMalformedRequest:
-		return fmt.Errorf("malformed request")
-	case StatusInvalidRequestArguments:
-		return fmt.Errorf("invalid request arguments")
-	case StatusServerError:
-		return fmt.Errorf("server error")
-	case StatusScriptEvaluationError:
-		return fmt.Errorf("script evaluation error")
-	case StatusServerTimeout:
-		return fmt.Errorf("server timeout")
-	case StatusServerSerializationError:
-		return fmt.Errorf("serverserver serialization error")
+		return false
 	default:
-		return fmt.Errorf("unknown error")
+		return true
 	}
+}
+
+func (r *Response) Error() error {
+	if r.isError() {
+		return fmt.Errorf("gremlin: code=%d, message=%q", r.Status.Code, r.Status.Message)
+	}
+	return nil
 }
