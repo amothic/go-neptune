@@ -46,7 +46,7 @@ func (c *Client) post(payload interface{}) (*http.Response, error) {
 	if err != nil {
 		return nil, err
 	}
-	return c.do(http.MethodPost, bytes.NewBuffer(data))
+	return c.do(http.MethodPost, bytes.NewReader(data))
 }
 
 func (c *Client) decodeJSON(resp *http.Response, payload interface{}) error {
