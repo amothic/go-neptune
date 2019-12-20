@@ -6,20 +6,16 @@ import (
 )
 
 type Response struct {
-	RequestID string         `json:"requestId"`
-	Status    ResponseStatus `json:"status"`
-	Result    ResponseResult `json:"result"`
-}
-
-type ResponseStatus struct {
-	Message    string                 `json:"message"`
-	Code       int                    `json:"code"`
-	Attributes map[string]interface{} `json:"attributes"`
-}
-
-type ResponseResult struct {
-	Data json.RawMessage        `json:"data"`
-	Meta map[string]interface{} `json:"meta"`
+	RequestID string `json:"requestId"`
+	Status    struct {
+		Message    string                 `json:"message"`
+		Code       int                    `json:"code"`
+		Attributes map[string]interface{} `json:"attributes"`
+	} `json:"status"`
+	Result struct {
+		Data json.RawMessage        `json:"data"`
+		Meta map[string]interface{} `json:"meta"`
+	} `json:"result"`
 }
 
 func (r *Response) isError() bool {
