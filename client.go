@@ -6,29 +6,19 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path"
 )
 
 type Client struct {
-	endpoint   string
 	httpClient *http.Client
+	endpoint   string
 }
 
 func Open(urlString string) (*Client, error) {
-	url, err := getEndpointURL(urlString)
+	url, err := url.Parse(urlString)
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: url, httpClient: http.DefaultClient}, nil
-}
-
-func getEndpointURL(urlString string) (string, error) {
-	u, err := url.Parse(urlString)
-	if err != nil {
-		return "", err
-	}
-	u.Path = path.Join(u.Path, "gremlin")
-	return u.String(), nil
+	return &Client{endpoint: url.String(), httpClient: http.DefaultClient}, nil
 }
 
 func (c *Client) do(method string, body io.Reader) (*http.Response, error) {

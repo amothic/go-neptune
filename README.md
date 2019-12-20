@@ -11,7 +11,7 @@ $ go get -u github.com/amothic/go-neptune
 ```go
 import "github.com/amothic/go-neptune"
 
-graph, err := neptune.Open("http://localhost:8182")
+graph, err := neptune.Open("http://localhost:8182/gremlin")
 if err != nil {
     panic(err.Error())
 }
