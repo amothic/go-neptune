@@ -14,9 +14,8 @@ func TestClient_Query(t *testing.T) {
 		wantErr bool
 	}{
 		{
-			name:    "success",
-			query:   `g.V().count()`,
-			wantErr: false,
+			name:  "success",
+			query: `g.V().count()`,
 		},
 		{
 			name:    "failure",
